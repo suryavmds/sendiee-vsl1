@@ -4,96 +4,80 @@ import {
     IoCallOutline,
     IoVideocamOutline,
     IoEllipsisVertical,
-    IoCloseOutline,
     IoHappyOutline,
     IoAttachOutline,
     IoMicOutline,
-    IoCartOutline,
     IoCheckmarkDoneSharp,
-    IoLeafOutline,
     IoSparklesOutline,
-    IoCheckmarkCircle,
 } from "react-icons/io5";
-import {
-    FaWhatsapp,
-    FaInstagram,
-    FaRegHeart,
-    FaRegPaperPlane,
-    FaQrcode,
-} from "react-icons/fa";
-import {
-    HiOutlineShoppingBag,
-    HiOutlineSparkles,
-} from "react-icons/hi";
-import { BsShop, BsBoxSeam } from "react-icons/bs";
+import { MdSignalWifiStatusbar2Bar } from "react-icons/md";
+
 import { RiRefreshLine } from "react-icons/ri";
-import { MdStorefront } from "react-icons/md";
 
-/* ── Catalog products ── */
-const PRODUCTS = [
-    { id: 1, name: "Vitamin C Serum", desc: "Brightening face serum", price: 899, cls: "serum" },
-    { id: 2, name: "Moisturizer SPF 30", desc: "Daily sun protection", price: 1299, cls: "moist" },
-    { id: 3, name: "Clay Face Mask", desc: "Deep pore cleanser", price: 649, cls: "mask" },
+/* ── Chat script ── */
+const SCRIPT = [
+    // English opener
+    { sender: "customer", text: "Hi, do you have cold pressed groundnut oil?", lang: "en" },
+    { sender: "ai", text: "Hi there! 👋 Yes, we have premium cold pressed groundnut oil. Available in 500ml (₹349) and 1L (₹599). Would you like to order?", lang: "en" },
+
+    // Tamil
+    { sender: "customer", text: "நல்லெண்ணெய் இருக்கா? விலை என்ன?", lang: "ta" },
+    { sender: "ai", text: "நிச்சயமாக! எங்களிடம் மரச்செக்கு நல்லெண்ணெய் உள்ளது 🌿\n500ml — ₹299\n1 Litre — ₹549\nஉங்களுக்கு எந்த அளவு வேணும்?", lang: "ta" },
+
+    // Hindi
+    { sender: "customer", text: "Bhai jaggery ka rate kya hai?", lang: "hi" },
+    { sender: "ai", text: "जी, हमारे पास organic गुड़ उपलब्ध है! 🍯\n500g — ₹149\n1kg — ₹269\nबिल्कुल शुद्ध और natural। Order करूँ?", lang: "hi" },
+
+    // English follow-up
+    { sender: "customer", text: "What's the delivery time to Chennai?", lang: "en" },
+    { sender: "ai", text: "Delivery to Chennai takes 2-3 business days 🚚\nFree shipping on orders above ₹500!\nShall I add the groundnut oil + jaggery combo?", lang: "en" },
+
+    // Malayalam
+    { sender: "customer", text: "Keralathilekk delivery undoo?", lang: "ml" },
+    { sender: "ai", text: "ഉണ്ട്! കേരളത്തിലേക്ക് 3-4 ദിവസത്തിനുള്ളിൽ delivery ചെയ്യും 📦\n₹500-ന് മുകളിൽ order ചെയ്താൽ free shipping. Order ചെയ്യട്ടെ?", lang: "ml" },
+
+    // Closing — Tamil mix
+    { sender: "customer", text: "Super! 1L groundnut oil + 1kg jaggery order panunga", lang: "ta" },
+    { sender: "ai", text: "Order confirmed! ✅\n\n🛒 1L Cold Pressed Groundnut Oil — ₹599\n🍯 1kg Organic Jaggery — ₹269\n\nTotal: ₹868 (Free Delivery!)\n\nPayment link அனுப்பறேன். Thank you for choosing 7LAND Foods! 🌾", lang: "ta" },
 ];
 
-/* ── Flow form fields ── */
-const FLOW_FIELDS = [
-    { label: "Full Name", value: "Priya Sharma" },
-    { label: "Phone Number", value: "9876543210" },
-    { label: "Address Line 1", value: "42 MG Road" },
-    { label: "City", value: "Bengaluru" },
-    { label: "Pincode", value: "560001" },
-];
-
-/* ── Feature pill text per step ── */
+/* ── Feature pill text per phase ── */
 const PILL_STEPS = [
-    { key: 0, text: "Click-to-WhatsApp Ad" },
-    { key: 2, text: "AI replies instantly" },
-    { key: 4, text: "Native catalog — no app needed" },
-    { key: 8, text: "WhatsApp Flows — no redirects" },
-    { key: 10, text: "In-chat payment request" },
-    { key: 13, text: "Auto order confirmation" },
+    "AI replies in seconds",
+    "Multilingual — Tamil",
+    "Multilingual — Hindi",
+    "Smart product recommendations",
+    "Multilingual — Malayalam",
+    "Instant order confirmation",
 ];
 
 export default function PhonePreview() {
     const sectionRef = useRef(null);
-    const chatEndRef = useRef(null);
-    const timersRef = useRef([]);
+    const chatRef = useRef(null);
+    const abortRef = useRef(false);
+    const hasStartedRef = useRef(false);
 
-    const [started, setStarted] = useState(false);
     const [done, setDone] = useState(false);
     const [pillIdx, setPillIdx] = useState(0);
-    const [igSlideOut, setIgSlideOut] = useState(false);
-    const [igBtnPulsing, setIgBtnPulsing] = useState(true);
-
-    // WhatsApp state
     const [messages, setMessages] = useState([]);
     const [typing, setTyping] = useState(false);
     const [inputText, setInputText] = useState("Message");
     const [inputTyping, setInputTyping] = useState(false);
 
-    // Overlays
-    const [catalogOpen, setCatalogOpen] = useState(false);
-    const [flowOpen, setFlowOpen] = useState(false);
-    const [cartItems, setCartItems] = useState([]);
-    const [addedProducts, setAddedProducts] = useState([]);
-    const [showViewCart, setShowViewCart] = useState(false);
-    const [flowFieldValues, setFlowFieldValues] = useState({});
-    const [flowFillingIdx, setFlowFillingIdx] = useState(-1);
-    const [flowReady, setFlowReady] = useState(false);
-    const [flashProductId, setFlashProductId] = useState(null);
-
     /* --- helpers --- */
     const delay = (ms) =>
-        new Promise((r) => {
-            const t = setTimeout(r, ms);
-            timersRef.current.push(t);
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (abortRef.current) { reject(new Error("aborted")); return; }
+                resolve();
+            }, ms);
         });
 
     const scrollChat = useCallback(() => {
-        setTimeout(() => {
-            chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        }, 100);
+        requestAnimationFrame(() => {
+            const el = chatRef.current;
+            if (el) el.scrollTop = el.scrollHeight;
+        });
     }, []);
 
     const addMsg = useCallback(
@@ -118,42 +102,21 @@ export default function PhonePreview() {
         setInputTyping(true);
         setInputText("");
         for (let i = 0; i <= text.length; i++) {
+            if (abortRef.current) return;
             setInputText(text.slice(0, i));
-            await delay(40);
+            await delay(30);
         }
-        await delay(300);
+        await delay(200);
         setInputTyping(false);
         setInputText("Message");
     }, []);
 
-    const typeFlowField = useCallback(async (idx) => {
-        const field = FLOW_FIELDS[idx];
-        setFlowFillingIdx(idx);
-        for (let i = 0; i <= field.value.length; i++) {
-            setFlowFieldValues((prev) => ({ ...prev, [idx]: field.value.slice(0, i) }));
-            await delay(50);
-        }
-        setFlowFillingIdx(-1);
-    }, []);
-
-    /* --- reset state --- */
+    /* --- reset --- */
     const resetState = useCallback(() => {
-        // clear all pending timers
-        timersRef.current.forEach(clearTimeout);
-        timersRef.current = [];
-
+        abortRef.current = true;
+        setTimeout(() => { abortRef.current = false; }, 50);
         setMessages([]);
         setTyping(false);
-        setIgSlideOut(false);
-        setIgBtnPulsing(true);
-        setCatalogOpen(false);
-        setFlowOpen(false);
-        setCartItems([]);
-        setAddedProducts([]);
-        setShowViewCart(false);
-        setFlowFieldValues({});
-        setFlowFillingIdx(-1);
-        setFlowReady(false);
         setDone(false);
         setInputText("Message");
         setInputTyping(false);
@@ -162,170 +125,46 @@ export default function PhonePreview() {
 
     /* --- main timeline --- */
     const runTimeline = useCallback(async () => {
-        resetState();
+        try {
+            await delay(1500);
 
-        // Step 0 — Instagram ad visible, button pulsing
-        await delay(2500);
+            for (let i = 0; i < SCRIPT.length; i++) {
+                const msg = SCRIPT[i];
 
-        // Tap WA button, transition
-        setIgBtnPulsing(false);
-        await delay(400);
-        setIgSlideOut(true);
-        await delay(500);
+                if (msg.sender === "customer") {
+                    // Simulate customer typing
+                    await simulateCustomerTyping(msg.text);
+                    addMsg({ type: "text", sender: "customer", text: msg.text });
+                    await delay(600);
+                } else {
+                    // Update pill based on conversation phase
+                    const pillMap = { 0: 0, 1: 0, 2: 1, 3: 1, 4: 2, 5: 2, 6: 3, 7: 3, 8: 4, 9: 4, 10: 5, 11: 5 };
+                    if (pillMap[i] !== undefined) setPillIdx(pillMap[i]);
 
-        // Step 1 — Customer sends first message
-        await simulateCustomerTyping("How much is the moisturizer?");
-        addMsg({ type: "text", sender: "customer", text: "How much is the moisturizer?" });
-        await delay(800);
+                    // AI typing then response
+                    const typingDuration = 800 + Math.min(msg.text.length * 8, 1200);
+                    await showTyping(typingDuration);
+                    addMsg({ type: "text", sender: "ai", text: msg.text });
+                    await delay(2000);
+                }
+            }
 
-        // Step 2 — AI typing then welcome template
-        setPillIdx(1);
-        await showTyping(1800);
-        addMsg({
-            type: "template-image",
-            sender: "ai",
-            image: "skincare-banner",
-            body: "Hi! Welcome to Glowly Skincare. How can we help you today?",
-            buttons: ["Browse Products", "View Categories"],
-        });
-        await delay(2500);
-
-        // Step 3 — Customer taps "Browse Products"
-        addMsg({ type: "text", sender: "customer", text: "Browse Products" });
-        await delay(600);
-
-        // Step 4 — AI sends catalog message
-        setPillIdx(2);
-        await showTyping(1200);
-        addMsg({
-            type: "template-btn",
-            sender: "ai",
-            body: "Here are our top products! Browse and add to cart.",
-            buttons: ["View Catalog"],
-        });
-        await delay(1200);
-
-        // Open catalog overlay
-        setCatalogOpen(true);
-        await delay(1200);
-
-        // Auto add product 1
-        setAddedProducts((p) => [...p, 1]);
-        setCartItems((c) => [...c, PRODUCTS[0]]);
-        setFlashProductId(1);
-        await delay(300);
-        setFlashProductId(null);
-        await delay(1200);
-
-        // Auto add product 2
-        setAddedProducts((p) => [...p, 2]);
-        setCartItems((c) => [...c, PRODUCTS[1]]);
-        setFlashProductId(2);
-        await delay(300);
-        setFlashProductId(null);
-        await delay(1000);
-
-        // Show view cart button, then auto-tap
-        setShowViewCart(true);
-        await delay(1000);
-        setCatalogOpen(false);
-        setShowViewCart(false);
-        await delay(400);
-
-        // Step 5 — Cart summary
-        await showTyping(800);
-        addMsg({
-            type: "template-cart",
-            sender: "ai",
-            items: [
-                { name: "Vitamin C Serum", price: "₹899" },
-                { name: "Moisturizer SPF", price: "₹1,299" },
-            ],
-            total: "₹2,198",
-            buttons: ["Checkout", "Continue Shopping"],
-        });
-        await delay(2000);
-
-        // Step 6 — Customer taps "Checkout"
-        addMsg({ type: "text", sender: "customer", text: "Checkout" });
-        await delay(500);
-
-        // Step 7 — AI sends flow message
-        await showTyping(1200);
-        addMsg({
-            type: "template-btn",
-            sender: "ai",
-            body: "Almost there! We just need your delivery address to complete your order.",
-            buttons: ["Enter Delivery Details"],
-        });
-        await delay(1200);
-
-        // Step 8 — Open flow overlay
-        setPillIdx(3);
-        setFlowOpen(true);
-        await delay(600);
-
-        // Auto-fill fields one by one
-        for (let i = 0; i < FLOW_FIELDS.length; i++) {
-            await typeFlowField(i);
-            await delay(200);
+            setDone(true);
+        } catch (e) {
+            if (e.message !== "aborted") throw e;
         }
-        setFlowReady(true);
-        await delay(600);
+    }, [addMsg, showTyping, simulateCustomerTyping, scrollChat]);
 
-        // Submit & close
-        setFlowOpen(false);
-        await delay(400);
-
-        // Customer confirms
-        addMsg({ type: "text", sender: "customer", text: "Address saved" });
-        await delay(600);
-
-        // Step 9 — AI sends payment template
-        setPillIdx(4);
-        await showTyping(1500);
-        addMsg({
-            type: "template-payment",
-            sender: "ai",
-            items: [
-                { name: "Vitamin C Serum", price: "₹899" },
-                { name: "Moisturizer SPF", price: "₹1,299" },
-                { name: "Delivery", price: "₹49" },
-            ],
-            total: "₹2,247",
-            upi: "glowly@okaxis",
-        });
-        await delay(3000);
-
-        // Step 10 — Customer pays
-        addMsg({ type: "text", sender: "customer", text: "Paid" });
-        await delay(800);
-
-        // Step 11 — Verification
-        await showTyping(3200);
-
-        // Step 12 — Confirmation template
-        setPillIdx(5);
-        addMsg({
-            type: "template-confirm",
-            sender: "ai",
-            body: "Order Confirmed!\n\nOrder ID: #GLW-00142\nEstimated Delivery: 3–5 business days\n\nThank you for shopping with Glowly Skincare!",
-            buttons: ["Track Order", "Shop Again"],
-        });
-        await delay(2000);
-
-        setDone(true);
-    }, [addMsg, showTyping, simulateCustomerTyping, typeFlowField, scrollChat, resetState]);
-
-    /* --- Intersection Observer trigger --- */
+    /* --- Intersection Observer --- */
     useEffect(() => {
         const el = sectionRef.current;
         if (!el) return;
 
         const obs = new IntersectionObserver(
             ([entry]) => {
-                if (entry.isIntersecting && !started) {
-                    setStarted(true);
+                if (entry.isIntersecting && !hasStartedRef.current) {
+                    hasStartedRef.current = true;
+                    abortRef.current = false;
                     runTimeline();
                 }
             },
@@ -333,170 +172,56 @@ export default function PhonePreview() {
         );
         obs.observe(el);
         return () => obs.disconnect();
-    }, [started, runTimeline]);
+    }, [runTimeline]);
 
     /* --- scroll on new messages --- */
     useEffect(() => {
         scrollChat();
     }, [messages, typing, scrollChat]);
 
-    /* --- handle replay --- */
+    /* --- replay --- */
     const handleReplay = () => {
-        setStarted(true);
-        setDone(false);
-        runTimeline();
+        resetState();
+        setTimeout(() => {
+            abortRef.current = false;
+            runTimeline();
+        }, 100);
     };
 
-    /* --- Render helpers --- */
-    const renderBubble = (msg) => {
+    /* --- time helper --- */
+    const getTime = (idx) => {
+        const base = 41; // 9:41
+        const min = base + Math.floor(idx / 2);
+        return `9:${min < 10 ? "0" + min : min} AM`;
+    };
+
+    /* --- render bubble --- */
+    const renderBubble = (msg, idx) => {
         const isOut = msg.sender === "customer";
-        const time = "9:42 AM";
+        const time = getTime(idx);
 
-        if (msg.type === "text") {
-            return (
-                <div key={msg.id} className={`wa-bubble ${isOut ? "outgoing" : "incoming"} wa-msg-enter`}>
-                    <div className="wa-bubble-text">{msg.text}</div>
-                    <div className="wa-bubble-meta">
-                        <span>{time}</span>
-                        {isOut && (
-                            <span className="wa-ticks">
-                                <IoCheckmarkDoneSharp size={14} />
-                            </span>
-                        )}
-                    </div>
+        return (
+            <div key={msg.id} className={`wa-bubble ${isOut ? "outgoing" : "incoming"} wa-msg-enter`}>
+                <div className="wa-bubble-text">{msg.text}</div>
+                <div className="wa-bubble-meta">
+                    <span>{time}</span>
+                    {isOut && (
+                        <span className="wa-ticks read">
+                            <IoCheckmarkDoneSharp size={14} />
+                        </span>
+                    )}
                 </div>
-            );
-        }
-
-        if (msg.type === "template-image") {
-            return (
-                <div key={msg.id} className="wa-bubble incoming wa-template wa-msg-enter">
-                    <div className={`wa-template-img-placeholder ${msg.image}`}>
-                        <HiOutlineSparkles size={32} />
-                    </div>
-                    <div className="wa-template-body">{msg.body}</div>
-                    <div className="wa-template-btns">
-                        {msg.buttons.map((b, i) => (
-                            <button key={i} className="wa-template-btn">
-                                {i === 0 ? <HiOutlineShoppingBag size={14} /> : <BsShop size={14} />}
-                                {b}
-                            </button>
-                        ))}
-                    </div>
-                    <div className="wa-bubble-meta" style={{ padding: "0 8px 4px" }}>
-                        <span>{time}</span>
-                    </div>
-                </div>
-            );
-        }
-
-        if (msg.type === "template-btn") {
-            return (
-                <div key={msg.id} className="wa-bubble incoming wa-template wa-msg-enter">
-                    <div className="wa-template-body">{msg.body}</div>
-                    <div className="wa-template-btns">
-                        {msg.buttons.map((b, i) => (
-                            <button key={i} className="wa-template-btn">
-                                {b}
-                            </button>
-                        ))}
-                    </div>
-                    <div className="wa-bubble-meta" style={{ padding: "0 8px 4px" }}>
-                        <span>{time}</span>
-                    </div>
-                </div>
-            );
-        }
-
-        if (msg.type === "template-cart") {
-            return (
-                <div key={msg.id} className="wa-bubble incoming wa-template wa-msg-enter">
-                    <div className="wa-template-body">
-                        <strong><IoCartOutline size={14} style={{ verticalAlign: "middle", marginRight: 4 }} />Your Cart</strong>
-                        <br /><br />
-                        {msg.items.map((item, i) => (
-                            <span key={i}>• {item.name} &nbsp; {item.price}<br /></span>
-                        ))}
-                        <span style={{ display: "inline-block", width: "100%", borderTop: "1px solid #e5e5e5", margin: "6px 0" }} />
-                        <strong>Total: {msg.total}</strong>
-                        <br /><br />
-                        Ready to checkout?
-                    </div>
-                    <div className="wa-template-btns">
-                        {msg.buttons.map((b, i) => (
-                            <button key={i} className="wa-template-btn">
-                                {i === 0 && <IoCheckmarkCircle size={14} />}
-                                {i === 1 && <HiOutlineShoppingBag size={14} />}
-                                {b}
-                            </button>
-                        ))}
-                    </div>
-                    <div className="wa-bubble-meta" style={{ padding: "0 8px 4px" }}>
-                        <span>{time}</span>
-                    </div>
-                </div>
-            );
-        }
-
-        if (msg.type === "template-payment") {
-            return (
-                <div key={msg.id} className="wa-bubble incoming wa-template wa-msg-enter">
-                    <div className="wa-template-img-placeholder upi-qr">
-                        <FaQrcode size={64} color="#333" />
-                        <span className="qr-label">Scan to Pay</span>
-                    </div>
-                    <div className="wa-template-body">
-                        <strong>Payment Details</strong>
-                        <br /><br />
-                        {msg.items.map((item, i) => (
-                            <span key={i}>{item.name} &nbsp; {item.price}<br /></span>
-                        ))}
-                        <span style={{ display: "inline-block", width: "100%", borderTop: "1px solid #e5e5e5", margin: "6px 0" }} />
-                        <strong>Total Payable: {msg.total}</strong>
-                        <br /><br />
-                        Scan the QR above or pay to UPI: {msg.upi}
-                    </div>
-                    <div className="wa-bubble-meta" style={{ padding: "0 8px 4px" }}>
-                        <span>{time}</span>
-                    </div>
-                </div>
-            );
-        }
-
-        if (msg.type === "template-confirm") {
-            return (
-                <div key={msg.id} className="wa-bubble incoming wa-template wa-msg-enter">
-                    <div className="wa-template-img-placeholder success-banner">
-                        <IoCheckmarkCircle size={42} />
-                    </div>
-                    <div className="wa-template-body" style={{ whiteSpace: "pre-line" }}>
-                        {msg.body}
-                    </div>
-                    <div className="wa-template-btns">
-                        {msg.buttons.map((b, i) => (
-                            <button key={i} className="wa-template-btn">
-                                {i === 0 ? <BsBoxSeam size={14} /> : <HiOutlineShoppingBag size={14} />}
-                                {b}
-                            </button>
-                        ))}
-                    </div>
-                    <div className="wa-bubble-meta" style={{ padding: "0 8px 4px" }}>
-                        <span>9:44 AM</span>
-                    </div>
-                </div>
-            );
-        }
-
-        return null;
+            </div>
+        );
     };
 
     return (
         <section className="phone-section" ref={sectionRef}>
             {/* Feature Pill */}
             <div className="feature-pill">
-                <div className="feature-pill-inner" key={PILL_STEPS[pillIdx]?.key}>
+                <div className="feature-pill-inner" key={pillIdx}>
                     <IoSparklesOutline size={14} className="pill-icon" />
-                    <span>{PILL_STEPS[pillIdx]?.text}</span>
+                    <span>{PILL_STEPS[pillIdx]}</span>
                 </div>
             </div>
 
@@ -507,173 +232,53 @@ export default function PhonePreview() {
                     <div className="status-bar">
                         <span className="status-bar-time">9:41</span>
                         <div className="status-icons">
-                            <span>▂▄▆█</span>
+                            <span><MdSignalWifiStatusbar2Bar /></span>
                         </div>
                     </div>
 
-                    {/* WhatsApp Screen (behind IG) */}
-                    <div className="wa-screen">
-                        <div className="wa-header">
-                            <span className="wa-back"><IoArrowBack size={18} /></span>
-                            <div className="wa-avatar">
-                                <IoLeafOutline size={18} color="#2d6a4f" />
-                            </div>
-                            <div className="wa-contact-info">
-                                <div className="wa-contact-name">Glowly Skincare</div>
-                                <div className="wa-contact-status">online</div>
-                            </div>
-                            <div className="wa-header-icons">
-                                <IoVideocamOutline size={18} />
-                                <IoCallOutline size={18} />
-                                <IoEllipsisVertical size={18} />
-                            </div>
+                    {/* WA Header */}
+                    <div className="wa-header">
+                        <span className="wa-back"><IoArrowBack size={18} /></span>
+                        <div className="wa-avatar">
+                            <span style={{ fontSize: 16 }}>🌾</span>
                         </div>
-
-                        <div className="wa-chat">
-                            <div className="wa-date-chip">TODAY</div>
-                            {messages.map(renderBubble)}
-                            {typing && (
-                                <div className="wa-typing wa-msg-enter">
-                                    <span className="wa-typing-dot" />
-                                    <span className="wa-typing-dot" />
-                                    <span className="wa-typing-dot" />
-                                </div>
-                            )}
-                            <div ref={chatEndRef} />
+                        <div className="wa-contact-info">
+                            <div className="wa-contact-name">7LAND Foods</div>
+                            <div className="wa-contact-status">{typing ? "typing..." : "online"}</div>
                         </div>
-
-                        <div className="wa-input-bar">
-                            <div className="wa-input-field">
-                                <span className="wa-input-icons"><IoHappyOutline size={20} /></span>
-                                <span className={`wa-input-text ${inputTyping ? "typing-active" : ""}`}>
-                                    {inputText || "\u00A0"}
-                                </span>
-                                <span className="wa-input-icons"><IoAttachOutline size={20} /></span>
-                            </div>
-                            <div className="wa-mic-btn"><IoMicOutline size={20} /></div>
-                        </div>
-
-                        {/* Catalog Overlay */}
-                        <div className={`wa-overlay-scrim ${catalogOpen ? "active" : ""}`} />
-                        <div className={`wa-overlay ${catalogOpen ? "active" : ""}`} style={{ height: "75%" }}>
-                            <div className="catalog-header">
-                                <span className="catalog-title">Glowly Skincare</span>
-                                <div className="catalog-header-actions">
-                                    <div className="catalog-cart-icon">
-                                        <IoCartOutline size={20} />
-                                        {cartItems.length > 0 && (
-                                            <span className={`catalog-cart-badge ${flashProductId ? "bounce" : ""}`}>
-                                                {cartItems.length}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <button className="catalog-close" onClick={() => setCatalogOpen(false)}>
-                                        <IoCloseOutline size={22} />
-                                    </button>
-                                </div>
-                            </div>
-                            <div className="catalog-products">
-                                {PRODUCTS.map((p) => (
-                                    <div
-                                        key={p.id}
-                                        className={`catalog-product ${flashProductId === p.id ? "added-flash" : ""}`}
-                                    >
-                                        <div className={`catalog-product-img ${p.cls}`}>
-                                            {p.cls === "serum" && <HiOutlineSparkles size={24} color="#92400e" />}
-                                            {p.cls === "moist" && <IoLeafOutline size={24} color="#166534" />}
-                                            {p.cls === "mask" && <MdStorefront size={24} color="#5b21b6" />}
-                                        </div>
-                                        <div className="catalog-product-details">
-                                            <div className="catalog-product-name">{p.name}</div>
-                                            <div className="catalog-product-desc">{p.desc}</div>
-                                            <div className="catalog-product-price">₹{p.price}</div>
-                                        </div>
-                                        <button className={`catalog-add-btn ${addedProducts.includes(p.id) ? "added" : ""}`}>
-                                            {addedProducts.includes(p.id) ? "Added" : "Add +"}
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                            {showViewCart && (
-                                <button className="catalog-view-cart">
-                                    <IoCartOutline size={16} style={{ marginRight: 4 }} />
-                                    View Cart ({cartItems.length})
-                                </button>
-                            )}
-                        </div>
-
-                        {/* Flow Overlay */}
-                        <div className={`wa-overlay-scrim ${flowOpen ? "active" : ""}`} />
-                        <div className={`wa-overlay ${flowOpen ? "active" : ""}`} style={{ height: "80%" }}>
-                            <div className="flow-header">
-                                <div className="flow-header-left">
-                                    <span className="flow-header-title">Glowly Skincare</span>
-                                    <span className="flow-header-powered">
-                                        Powered by <FaWhatsapp size={10} style={{ marginLeft: 2 }} /> WhatsApp
-                                    </span>
-                                </div>
-                                <button className="flow-close">
-                                    <IoCloseOutline size={22} />
-                                </button>
-                            </div>
-                            <div className="flow-form">
-                                {FLOW_FIELDS.map((f, idx) => (
-                                    <div key={idx} className="flow-field">
-                                        <label>{f.label}</label>
-                                        <div
-                                            className={`flow-field-input ${flowFillingIdx === idx ? "filling" : flowFieldValues[idx] ? "filled" : ""
-                                                }`}
-                                        >
-                                            {flowFieldValues[idx] || ""}
-                                        </div>
-                                    </div>
-                                ))}
-                                <button className={`flow-submit ${flowReady ? "ready" : ""}`}>Submit</button>
-                            </div>
+                        <div className="wa-header-icons">
+                            <IoVideocamOutline size={18} />
+                            <IoCallOutline size={18} />
+                            <IoEllipsisVertical size={18} />
                         </div>
                     </div>
 
-                    {/* Instagram Screen (on top) */}
-                    <div className={`ig-screen ${igSlideOut ? "slide-out" : ""}`}>
-                        <div className="ig-topbar">
-                            <span className="ig-logo"><FaInstagram size={22} /></span>
-                            <div className="ig-topbar-icons">
-                                <FaRegHeart size={18} />
-                                <FaRegPaperPlane size={18} />
-                            </div>
+                    {/* Chat */}
+                    <div className="wa-chat" ref={chatRef}>
+                        <div className="wa-date-chip">TODAY</div>
+                        <div className="wa-e2e-notice">
+                            🔒 Messages and calls are end-to-end encrypted. No one outside of this chat, not even WhatsApp, can read or listen to them.
                         </div>
-                        <div className="ig-feed">
-                            <div className="ig-blur-post" />
-                            <div className="ig-ad-card">
-                                <div className="ig-ad-header">
-                                    <div className="ig-ad-avatar">
-                                        <IoLeafOutline size={16} color="#2d6a4f" />
-                                    </div>
-                                    <div className="ig-ad-info">
-                                        <div className="ig-ad-name">Glowly Skincare</div>
-                                        <div className="ig-ad-sponsored">Sponsored</div>
-                                    </div>
-                                    <IoEllipsisVertical size={16} color="white" />
-                                </div>
-                                <div className="ig-ad-image">
-                                    <div className="ig-ad-image-content">
-                                        <span className="product-icon">
-                                            <HiOutlineSparkles size={48} />
-                                        </span>
-                                        <div className="brand-text">GLOWLY</div>
-                                        <div className="tagline">Your skin, perfected</div>
-                                    </div>
-                                </div>
-                                <div className="ig-ad-copy">
-                                    <div className="ig-ad-headline">Transform your skincare routine</div>
-                                    <div className="ig-ad-subtext">Shop our bestsellers — delivered to your door</div>
-                                </div>
-                                <button className={`ig-wa-btn ${igBtnPulsing ? "pulsing" : ""}`}>
-                                    <FaWhatsapp size={16} /> Send Message on WhatsApp
-                                </button>
+                        {messages.map(renderBubble)}
+                        {typing && (
+                            <div className="wa-typing wa-msg-enter">
+                                <span className="wa-typing-dot" />
+                                <span className="wa-typing-dot" />
+                                <span className="wa-typing-dot" />
                             </div>
-                            <div className="ig-blur-bottom" />
+                        )}
+                    </div>
+
+                    {/* Input Bar */}
+                    <div className="wa-input-bar">
+                        <div className="wa-input-field">
+                            <span className="wa-input-icons"><IoHappyOutline size={20} /></span>
+                            <span className={`wa-input-text ${inputTyping ? "typing-active" : ""}`}>
+                                {inputText || "\u00A0"}
+                            </span>
+                            <span className="wa-input-icons"><IoAttachOutline size={20} /></span>
                         </div>
+                        <div className="wa-mic-btn"><IoMicOutline size={20} /></div>
                     </div>
                 </div>
             </div>

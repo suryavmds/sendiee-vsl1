@@ -312,7 +312,7 @@ export default function Home() {
         </section>
 
         {/* ====== PHONE PREVIEW ====== */}
-        {/* <PhonePreview /> */}
+        <PhonePreview />
 
         {/* ====== INDUSTRY CARDS ====== */}
         <section className="industry-section reveal" ref={addRevealRef}>
