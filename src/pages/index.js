@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import PhonePreview from "@/components/PhonePreview";
 import Head from "next/head";
+import { trackButtonClick, trackSectionView } from "@/lib/analytics";
 
 const CLIENT_LOGOS = Array.from({ length: 12 }, (_, i) => `/clients/${i + 1}.png`);
 
@@ -62,12 +63,22 @@ const INDUSTRIES = [
 export default function Home() {
   const revealRefs = useRef([]);
 
+  // Track which sections have already been reported
+  const trackedSections = useRef(new Set());
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
+
+            // GA section_view (fire once per section)
+            const sectionName = entry.target.dataset.section;
+            if (sectionName && !trackedSections.current.has(sectionName)) {
+              trackedSections.current.add(sectionName);
+              trackSectionView(sectionName);
+            }
           }
         });
       },
@@ -98,6 +109,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#07070d" />
+        {/* OG Image */}
+        <meta property="og:image" content="/og_image.png" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Sendiee" />
       </Head>
 
       <main>
@@ -131,7 +148,11 @@ export default function Home() {
             </p>
 
             {/* CTA Button */}
-            <a href="/booking" className="hero-cta-btn">
+            <a
+              href="/booking"
+              className="hero-cta-btn"
+              onClick={() => trackButtonClick("Book Appointment", "hero")}
+            >
               Book Appointment &gt;
             </a>
 
@@ -200,7 +221,7 @@ export default function Home() {
         </section>
 
         {/* ====== METRICS ====== */}
-        <section className="metrics reveal" ref={addRevealRef}>
+        <section className="metrics reveal" ref={addRevealRef} data-section="metrics">
           <div className="metrics-grid">
             <div className="metric-item">
               <div className="metric-value">40%</div>
@@ -242,7 +263,7 @@ export default function Home() {
         </section> */}
 
         {/* ====== PAIN POINTS ====== */}
-        <section className="pain-section reveal" ref={addRevealRef}>
+        <section className="pain-section reveal" ref={addRevealRef} data-section="pain_points">
           <p className="section-label">The Real Problem</p>
           <h2 className="section-title">
             Getting Enquiries is Easy.
@@ -268,14 +289,18 @@ export default function Home() {
           </div>
 
           <div style={{ textAlign: 'center' }}>
-            <a href="/booking" className="section-cta">
+            <a
+              href="/booking"
+              className="section-cta"
+              onClick={() => trackButtonClick("Book Appointment", "pain_points")}
+            >
               Book Appointment &gt;
             </a>
           </div>
         </section>
 
         {/* ====== SOLUTION / MEET SENDIEE ====== */}
-        <section className="solution-section reveal" ref={addRevealRef}>
+        <section className="solution-section reveal" ref={addRevealRef} data-section="solution">
           <div className="solution-content">
             <p className="section-label">The Solution</p>
             <h2 className="section-title">
@@ -304,7 +329,11 @@ export default function Home() {
             </div>
 
             <div style={{ textAlign: 'center' }}>
-              <a href="/booking" className="section-cta">
+              <a
+                href="/booking"
+                className="section-cta"
+                onClick={() => trackButtonClick("Book Appointment", "solution")}
+              >
                 Book Appointment &gt;
               </a>
             </div>
@@ -315,7 +344,7 @@ export default function Home() {
         <PhonePreview />
 
         {/* ====== INDUSTRY CARDS ====== */}
-        <section className="industry-section reveal" ref={addRevealRef}>
+        <section className="industry-section reveal" ref={addRevealRef} data-section="industries">
           <div className="solution-content" style={{ maxWidth: "100%" }}>
             <p className="section-label">Who Is This For?</p>
             <h2 className="section-title">

@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import Head from "next/head";
+import { trackBookingComplete, trackDemoClick } from "@/lib/analytics";
 
 const DEMOS = [
     {
@@ -31,8 +33,12 @@ const DEMOS = [
     },
 ];
 
-export default function BookingConfirmed({ name, email }) {
-    const displayName = name ? name.split(' ')[0] : null;
+export default function BookingConfirmed({ email, attendeeName }) {
+    const displayName = attendeeName ? attendeeName.split(' ')[0] : null;
+
+    useEffect(() => {
+        trackBookingComplete(attendeeName, email);
+    }, [attendeeName, email]);
 
     return (
         <>
@@ -43,6 +49,11 @@ export default function BookingConfirmed({ name, email }) {
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
                 <meta name="theme-color" content="#07070d" />
+                <meta property="og:image" content="/og_image.png" />
+                <meta property="og:image:type" content="image/png" />
+                <meta property="og:image:width" content="1200" />
+                <meta property="og:image:height" content="630" />
+                <meta property="og:image:alt" content="Sendiee" />
             </Head>
 
             <main className="confirmed-page">
@@ -86,6 +97,7 @@ export default function BookingConfirmed({ name, email }) {
                                     rel="noopener noreferrer"
                                     className="demo-card"
                                     style={{ '--demo-color': demo.color }}
+                                    onClick={() => trackDemoClick(demo.title, demo.href.includes('wa.me') ? 'whatsapp' : 'instagram')}
                                 >
                                     <div className="demo-card-icon" style={{ background: demo.color }}>
                                         <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -110,8 +122,8 @@ export default function BookingConfirmed({ name, email }) {
 }
 
 export async function getServerSideProps(context) {
-    const { name = null, email = null } = context.query;
+    const { email = null, attendeeName = null } = context.query;
     return {
-        props: { name, email },
+        props: { email, attendeeName },
     };
 }

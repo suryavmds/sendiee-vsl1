@@ -1,14 +1,28 @@
 import "@/styles/globals.css";
 import "@/styles/phone-preview.css";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import Script from "next/script";
+import { trackPageView } from "@/lib/analytics";
 
 export default function App({ Component, pageProps }) {
+  const router = useRouter();
+
+  /* Track page views on route change (both FB Pixel + GA4) */
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      trackPageView(url);
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => router.events.off("routeChangeComplete", handleRouteChange);
+  }, [router.events]);
+
   return (
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Sendiee — AI-Powered WhatsApp & Instagram Sales Automation</title>
+        <title>Sendiee — AI-Powered WhatsApp &amp; Instagram Sales Automation</title>
       </Head>
 
       {/* Microsoft Clarity */}
@@ -35,6 +49,31 @@ export default function App({ Component, pageProps }) {
           gtag('config', 'G-K5BDWQ2X3M');
         `}
       </Script>
+
+      {/* Meta Pixel */}
+      <Script id="fb-pixel" strategy="afterInteractive">
+        {`
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', '1637731963861404');
+          fbq('track', 'PageView');
+        `}
+      </Script>
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style={{ display: "none" }}
+          src="https://www.facebook.com/tr?id=1637731963861404&ev=PageView&noscript=1"
+          alt=""
+        />
+      </noscript>
 
       <Component {...pageProps} />
     </>
