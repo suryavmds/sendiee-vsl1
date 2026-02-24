@@ -151,9 +151,9 @@ export default function Home() {
             <a
               href="/booking"
               className="hero-cta-btn"
-              onClick={() => trackButtonClick("Book Appointment", "hero")}
+              onClick={() => trackButtonClick("Book Demo", "hero")}
             >
-              Book Appointment &gt;
+              Book Demo &gt;
             </a>
 
             {/* Social Proof Row */}
@@ -292,9 +292,9 @@ export default function Home() {
             <a
               href="/booking"
               className="section-cta"
-              onClick={() => trackButtonClick("Book Appointment", "pain_points")}
+              onClick={() => trackButtonClick("Book Demo", "pain_points")}
             >
-              Book Appointment &gt;
+              Book Demo &gt;
             </a>
           </div>
         </section>
@@ -332,9 +332,9 @@ export default function Home() {
               <a
                 href="/booking"
                 className="section-cta"
-                onClick={() => trackButtonClick("Book Appointment", "solution")}
+                onClick={() => trackButtonClick("Book Demo", "solution")}
               >
-                Book Appointment &gt;
+                Book Demo &gt;
               </a>
             </div>
           </div>
@@ -366,9 +366,12 @@ export default function Home() {
         </section>
 
         {/* ====== META PARTNER BADGE ====== */}
-        <div className="meta-partner-section">
+        {/* <div className="meta-partner-section">
           <img src="/logo/meta_partner.png" alt="Meta" />
           <span>Meta Business Partner</span>
+        </div> */}
+        <div className="meta-partner-section">
+          <img src="/mbp.png" alt="Meta" />
         </div>
 
         {/* ====== FINAL CTA ====== */}
