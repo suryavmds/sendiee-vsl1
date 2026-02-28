@@ -1,0 +1,263 @@
+/* =============== LIGHT THEME OVERRIDES =============== */
+/* All rules scoped under .light-theme to avoid affecting dark pages */
+
+.light-theme {
+  --bg-primary: #f8f9fc;
+  --bg-secondary: #f0f2f5;
+  --bg-card: rgba(0, 0, 0, 0.03);
+  --bg-card-hover: rgba(0, 0, 0, 0.06);
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a5568;
+  --text-muted: #718096;
+  --gradient-glow: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.08) 0%, transparent 70%);
+  --glass-bg: rgba(124, 58, 237, 0.03);
+  --glass-border: rgba(0, 0, 0, 0.08);
+
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* =============== HERO =============== */
+.light-theme .hero {
+  background-color: var(--bg-primary);
+  background-image:
+    linear-gradient(rgba(124, 58, 237, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.06) 1px, transparent 1px);
+}
+
+.light-theme .hero::before {
+  background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.1) 0%, transparent 70%);
+}
+
+.light-theme .hero-h3 {
+  color: #7c3aed;
+}
+
+.light-theme .hero-h1 {
+  color: #1a1a2e;
+}
+
+.light-theme .hero-h1 .highlight {
+  background: linear-gradient(135deg, #a855f7, #7c3aed, #6d28d9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.light-theme .hero-p {
+  color: var(--text-secondary);
+}
+
+.light-theme .hero-p strong {
+  color: #b8860b;
+}
+
+.light-theme .hero-avatar {
+  border-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.light-theme .hero-rating-text {
+  color: var(--text-secondary);
+}
+
+.light-theme .hero-video-frame {
+  box-shadow: 0 0 40px rgba(124, 58, 237, 0.2), 0 0 80px rgba(124, 58, 237, 0.05);
+}
+
+.light-theme .hero-video-wrap {
+  background: #e2e8f0;
+}
+
+.light-theme .hero-feature-item span {
+  color: var(--text-secondary);
+}
+
+/* =============== METRICS =============== */
+.light-theme .metric-label {
+  color: var(--text-muted);
+}
+
+/* =============== CLIENT LOGO MARQUEE =============== */
+.light-theme .marquee-section {
+  background: rgba(124, 58, 237, 0.03);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* =============== PAIN POINTS =============== */
+.light-theme .section-label {
+  color: var(--accent-purple);
+}
+
+.light-theme .section-title {
+  color: var(--text-primary);
+}
+
+.light-theme .section-subtitle {
+  color: var(--text-secondary);
+}
+
+.light-theme .pain-item {
+  border-left-color: rgba(124, 58, 237, 0.2);
+}
+
+.light-theme .pain-item:hover {
+  border-left-color: var(--accent-purple);
+}
+
+.light-theme .pain-text strong {
+  color: var(--text-primary);
+}
+
+.light-theme .pain-text span {
+  color: var(--text-muted);
+}
+
+/* =============== SOLUTION =============== */
+.light-theme .solution-section::before {
+  background: var(--gradient-glow);
+}
+
+.light-theme .solution-intro {
+  color: var(--text-secondary);
+}
+
+.light-theme .feature-card {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.05), rgba(59, 130, 246, 0.03));
+  border-color: rgba(124, 58, 237, 0.15);
+}
+
+.light-theme .feature-card:hover {
+  border-color: rgba(124, 58, 237, 0.35);
+  box-shadow: 0 4px 24px rgba(124, 58, 237, 0.1);
+}
+
+.light-theme .feature-card-text h4 {
+  color: var(--text-primary);
+}
+
+.light-theme .feature-card-text p {
+  color: var(--text-secondary);
+}
+
+/* =============== INDUSTRY CARDS =============== */
+.light-theme .industry-card {
+  background: rgba(124, 58, 237, 0.04);
+  border-color: rgba(124, 58, 237, 0.12);
+}
+
+.light-theme .industry-card:hover {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+.light-theme .industry-card span {
+  color: var(--text-secondary);
+}
+
+/* =============== META PARTNER =============== */
+.light-theme .meta-partner-section span {
+  color: var(--text-muted);
+}
+
+/* =============== FOOTER =============== */
+.light-theme .footer {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .footer p {
+  color: var(--text-muted);
+}
+
+/* =============== PHONE PREVIEW =============== */
+.light-theme .phone-section::before {
+  background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
+}
+
+.light-theme .feature-pill-inner {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: rgba(124, 58, 237, 0.2);
+  color: #4a5568;
+}
+
+.light-theme .phone-mockup {
+  background: linear-gradient(145deg, #2d2d44 0%, #1a1a2e 50%, #16162a 100%);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.1),
+    0 20px 60px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.light-theme .replay-btn {
+  border-color: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.light-theme .replay-btn:hover {
+  border-color: rgba(124, 58, 237, 0.5);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* =============== BOOKING PAGE =============== */
+.light-theme .booking-fullscreen {
+  background: var(--bg-primary);
+}
+
+/* =============== BOOKING CONFIRMED PAGE =============== */
+.light-theme .confirmed-h1 {
+  color: var(--text-primary);
+}
+
+.light-theme .confirmed-sub {
+  color: var(--text-secondary);
+}
+
+.light-theme .confirmed-sub strong {
+  color: #7c3aed;
+}
+
+.light-theme .confirmed-demo-section h2 {
+  color: var(--text-primary);
+}
+
+.light-theme .confirmed-demo-section > p {
+  color: var(--text-muted);
+}
+
+.light-theme .demo-card {
+  background: var(--bg-card);
+  border-color: var(--glass-border);
+}
+
+.light-theme .demo-card:hover {
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.1);
+}
+
+.light-theme .demo-card-text strong {
+  color: var(--text-primary);
+}
+
+.light-theme .demo-card-text span {
+  color: var(--text-muted);
+}
+
+.light-theme .demo-card-arrow {
+  color: var(--text-muted);
+}
+
+.light-theme .demo-card:hover .demo-card-arrow {
+  color: var(--text-secondary);
+}
+
+/* =============== SCROLL ANIMATIONS =============== */
+.light-theme .reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.light-theme .reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

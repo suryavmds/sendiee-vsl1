@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import "@/styles/phone-preview.css";
+import "@/styles/light-theme.css";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";

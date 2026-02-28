@@ -491,11 +491,11 @@ a {
 .meta-partner-badge {
   display: flex;
   justify-content: center;
-  padding: 32px 20px;
+  /* padding: 32px 20px; */
 }
 
 .meta-partner-badge img {
-  height: 48px;
+  height: 75px;
   width: auto;
   object-fit: contain;
   /* opacity: 0.85; */
