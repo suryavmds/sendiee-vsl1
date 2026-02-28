@@ -9,7 +9,7 @@ import { trackPageView } from "@/lib/analytics";
 export default function App({ Component, pageProps }) {
   const router = useRouter();
 
-  /* Track page views on route change (both FB Pixel + GA4) */
+  /* Track page views on route change (GA4) */
   useEffect(() => {
     const handleRouteChange = (url) => {
       trackPageView(url);
@@ -60,31 +60,6 @@ export default function App({ Component, pageProps }) {
           gtag('config', 'G-K5BDWQ2X3M');
         `}
       </Script>
-
-      {/* Meta Pixel */}
-      <Script id="fb-pixel" strategy="afterInteractive">
-        {`
-          !function(f,b,e,v,n,t,s)
-          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-          n.queue=[];t=b.createElement(e);t.async=!0;
-          t.src=v;s=b.getElementsByTagName(e)[0];
-          s.parentNode.insertBefore(t,s)}(window, document,'script',
-          'https://connect.facebook.net/en_US/fbevents.js');
-          fbq('init', '1637731963861404');
-          fbq('track', 'PageView');
-        `}
-      </Script>
-      <noscript>
-        <img
-          height="1"
-          width="1"
-          style={{ display: "none" }}
-          src="https://www.facebook.com/tr?id=1637731963861404&ev=PageView&noscript=1"
-          alt=""
-        />
-      </noscript>
 
       <Component {...pageProps} />
     </>

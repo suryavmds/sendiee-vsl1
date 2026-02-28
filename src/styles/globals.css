@@ -342,58 +342,46 @@ a {
   line-height: 1.4;
 }
 
-/* =============== MARQUEE =============== */
+/* =============== CLIENT LOGO MARQUEE =============== */
 .marquee-section {
-  padding: 16px 0 56px;
+  padding: 20px 0;
   overflow: hidden;
+  background: rgba(255, 255, 255, 0.04);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
 }
 
-.marquee-row {
+.marquee-track {
   display: flex;
-  gap: 40px;
-  /* padding: 12px 0; */
+  align-items: center;
+  gap: 48px;
   width: max-content;
-}
-
-.marquee-row-ltr {
-  animation: marquee-ltr 30s linear infinite;
-}
-
-.marquee-row-rtl {
-  animation: marquee-rtl 30s linear infinite;
+  animation: marquee-scroll 60s linear infinite;
 }
 
 .marquee-logo {
-  height: 80px;
+  height: 52px;
   width: auto;
+  object-fit: contain;
+  /* filter: grayscale(100%) brightness(1.8); */
   /* opacity: 0.5; */
-  /* filter: grayscale(100%) brightness(2); */
   transition: opacity 0.3s, filter 0.3s;
   flex-shrink: 0;
 }
 
 .marquee-logo:hover {
-  opacity: 0.9;
+  opacity: 1;
   filter: grayscale(0%) brightness(1);
 }
 
-@keyframes marquee-ltr {
+@keyframes marquee-scroll {
   from {
     transform: translateX(0);
   }
-
   to {
     transform: translateX(-50%);
-  }
-}
-
-@keyframes marquee-rtl {
-  from {
-    transform: translateX(-50%);
-  }
-
-  to {
-    transform: translateX(0);
   }
 }
 
@@ -497,6 +485,20 @@ a {
   font-size: 13px;
   color: var(--text-muted);
   line-height: 1.5;
+}
+
+/* =============== META PARTNER BADGE =============== */
+.meta-partner-badge {
+  display: flex;
+  justify-content: center;
+  padding: 32px 20px;
+}
+
+.meta-partner-badge img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  /* opacity: 0.85; */
 }
 
 /* =============== SOLUTION =============== */
@@ -966,8 +968,12 @@ a {
     font-size: 14px;
   }
 
+  .marquee-track {
+    gap: 64px;
+  }
+
   .marquee-logo {
-    height: 120px;
+    height: 72px;
   }
 
   .pain-section,
@@ -1019,5 +1025,13 @@ a {
 
   .metric-value {
     font-size: 64px;
+  }
+
+  .marquee-logo {
+    height: 80px;
+  }
+
+  .marquee-track {
+    gap: 72px;
   }
 }

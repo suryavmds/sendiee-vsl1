@@ -3,7 +3,7 @@ import PhonePreview from "@/components/PhonePreview";
 import Head from "next/head";
 import { trackButtonClick, trackSectionView } from "@/lib/analytics";
 
-const CLIENT_LOGOS = Array.from({ length: 12 }, (_, i) => `/clients/${i + 1}.png`);
+const CLIENT_LOGOS = Array.from({ length: 8 }, (_, i) => `/clients/v1/${i + 1}.png`);
 
 const PAIN_POINTS = [
   {
@@ -238,29 +238,19 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ====== BRAND MARQUEE ====== */}
-        {/* <section className="marquee-section">
-          <div className="marquee-row marquee-row-ltr">
-            {logoSet.map((src, i) => (
+        {/* ====== CLIENT LOGOS ====== */}
+        <section className="marquee-section">
+          <div className="marquee-track">
+            {[...logoSet, ...logoSet].map((src, i) => (
               <img
-                key={`ltr-${i}`}
+                key={i}
                 src={src}
                 alt={`Client ${(i % 12) + 1}`}
                 className="marquee-logo"
               />
             ))}
           </div>
-          <div className="marquee-row marquee-row-rtl">
-            {logoSet.map((src, i) => (
-              <img
-                key={`rtl-${i}`}
-                src={src}
-                alt={`Client ${(i % 12) + 1}`}
-                className="marquee-logo"
-              />
-            ))}
-          </div>
-        </section> */}
+        </section>
 
         {/* ====== PAIN POINTS ====== */}
         <section className="pain-section reveal" ref={addRevealRef} data-section="pain_points">
@@ -298,6 +288,11 @@ export default function Home() {
             </a>
           </div>
         </section>
+
+        {/* ====== META PARTNER BADGE ====== */}
+        <div className="meta-partner-badge">
+          <img src="/logo/meta_partner.png" alt="Meta Business Partner" />
+        </div>
 
         {/* ====== SOLUTION / MEET SENDIEE ====== */}
         <section className="solution-section reveal" ref={addRevealRef} data-section="solution">
@@ -362,6 +357,16 @@ export default function Home() {
                 <span>{ind.label}</span>
               </div>
             ))}
+          </div>
+
+          <div style={{ textAlign: 'center' }}>
+            <a
+              href="/booking"
+              className="section-cta"
+              onClick={() => trackButtonClick("Book Demo", "industries")}
+            >
+              Book Demo &gt;
+            </a>
           </div>
         </section>
 

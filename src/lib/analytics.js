@@ -1,22 +1,10 @@
 /**
- * Sendiee Analytics — Meta Pixel + GA4 helpers
- * Meta Pixel ID: 1637731963861404
+ * Sendiee Analytics — GA4 helpers
  * GA4 ID: G-K5BDWQ2X3M
+ * Note: Meta Pixel events are managed via Google Tag Manager.
  */
 
 /* ── Primitives ── */
-
-export function trackFBEvent(eventName, params = {}) {
-    if (typeof window !== "undefined" && window.fbq) {
-        window.fbq("track", eventName, params);
-    }
-}
-
-export function trackFBCustomEvent(eventName, params = {}) {
-    if (typeof window !== "undefined" && window.fbq) {
-        window.fbq("trackCustom", eventName, params);
-    }
-}
 
 export function trackGAEvent(eventName, params = {}) {
     if (typeof window !== "undefined" && window.gtag) {
@@ -28,16 +16,11 @@ export function trackGAEvent(eventName, params = {}) {
 
 /** Fire on every page view (route change) */
 export function trackPageView(pageName) {
-    trackFBEvent("PageView");
     trackGAEvent("page_view", { page_title: pageName });
 }
 
 /** CTA button click — "Book Appointment" etc. */
 export function trackButtonClick(buttonName, section) {
-    trackFBEvent("ViewContent", {
-        content_name: buttonName,
-        content_category: section,
-    });
     trackGAEvent("cta_click", {
         button_text: buttonName,
         section,
@@ -49,12 +32,8 @@ export function trackBookingStart() {
     trackGAEvent("begin_booking");
 }
 
-/** Booking confirmed — fires FB Schedule + GA booking_complete */
+/** Booking confirmed — fires GA booking_complete */
 export function trackBookingComplete(attendeeName, email) {
-    trackFBEvent("Schedule", {
-        ...(attendeeName && { content_name: attendeeName }),
-        ...(email && { content_category: email }),
-    });
     trackGAEvent("booking_complete", {
         attendee_name: attendeeName || "",
         email: email || "",
