@@ -110,7 +110,8 @@ export default function Home() {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#07070d" />
         {/* OG Image */}
-        <meta property="og:image" content="/og_image.png" />
+        <meta property="og:image" content="https://getdemo.sendiee.com/og_image.png" />
+        <meta property="og:url" content="https://getdemo.sendiee.com" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />

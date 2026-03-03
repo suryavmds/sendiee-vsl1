@@ -104,7 +104,8 @@ export default function HomeLight() {
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="theme-color" content="#f8f9fc" />
-        <meta property="og:image" content="/og_image_v1.png" />
+        <meta property="og:image" content="https://getdemo.sendiee.com/og_image_v1.png" />
+        <meta property="og:url" content="https://getdemo.sendiee.com/v1" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
