@@ -139,7 +139,7 @@ export default function HomeLight() {
             </p>
 
             <a
-              href="/v1/booking"
+              href="/v1/qualify"
               className="hero-cta-btn"
               onClick={() => trackButtonClick("Book Demo", "hero")}
             >
@@ -246,7 +246,7 @@ export default function HomeLight() {
 
           <div style={{ textAlign: 'center' }}>
             <a
-              href="/v1/booking"
+              href="/v1/qualify"
               className="section-cta"
               onClick={() => trackButtonClick("Book Demo", "pain_points")}
             >
@@ -291,7 +291,7 @@ export default function HomeLight() {
 
             <div style={{ textAlign: 'center' }}>
               <a
-                href="/v1/booking"
+                href="/v1/qualify"
                 className="section-cta"
                 onClick={() => trackButtonClick("Book Demo", "solution")}
               >
@@ -327,7 +327,7 @@ export default function HomeLight() {
 
           <div style={{ textAlign: 'center' }}>
             <a
-              href="/v1/booking"
+              href="/v1/qualify"
               className="section-cta"
               onClick={() => trackButtonClick("Book Demo", "industries")}
             >

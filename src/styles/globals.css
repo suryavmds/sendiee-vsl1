@@ -867,6 +867,410 @@ a {
   opacity: 0.5;
 }
 
+/* =============== QUALIFY FORM PAGE =============== */
+.qualify-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 20px 64px;
+  background-color: var(--bg-primary);
+  background-image:
+    linear-gradient(rgba(124, 58, 237, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.qualify-container {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qualify-logo-link {
+  display: inline-block;
+  margin-bottom: 24px;
+}
+
+.qualify-logo {
+  height: 48px;
+  width: auto;
+}
+
+/* Progress bar */
+.qualify-progress {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.qualify-progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.qualify-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7c3aed, #a855f7);
+  border-radius: 100px;
+  transition: width 0.5s ease;
+}
+
+.qualify-progress-label {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+/* Card */
+.qualify-card {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.07), rgba(59, 130, 246, 0.04));
+  border: 1px solid rgba(124, 58, 237, 0.18);
+  border-radius: var(--radius-xl);
+  padding: 32px 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.qualify-card-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.qualify-step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+  border-radius: 50%;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 14px;
+  box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+}
+
+.qualify-title {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.qualify-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Form */
+.qualify-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.required {
+  color: #a855f7;
+}
+
+.form-group input,
+.form-group select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.form-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: rgba(124, 58, 237, 0.6);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+}
+
+/* Radio grid */
+.radio-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.radio-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  user-select: none;
+}
+
+.radio-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.radio-option:hover {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+.radio-option.radio-selected {
+  background: rgba(124, 58, 237, 0.14);
+  border-color: rgba(124, 58, 237, 0.6);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.15);
+}
+
+.radio-option.radio-selected::before {
+  content: '✓';
+  font-size: 11px;
+  font-weight: 700;
+  color: #a855f7;
+  flex-shrink: 0;
+}
+
+.form-error {
+  font-size: 13px;
+  color: #f87171;
+  text-align: center;
+  padding: 10px 14px;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.2);
+  border-radius: var(--radius-sm);
+}
+
+/* Qualify buttons */
+.qualify-btn {
+  display: inline-block;
+  width: 100%;
+  padding: 14px 24px;
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #d946ef 0%, #a855f7 50%, #7c3aed 100%);
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  text-align: center;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 24px rgba(168, 85, 247, 0.45);
+  transition: transform 0.25s, box-shadow 0.25s, opacity 0.2s;
+  margin-top: 4px;
+}
+
+.qualify-btn:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 32px rgba(168, 85, 247, 0.6);
+}
+
+.qualify-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.qualify-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.qualify-btn-back {
+  padding: 14px 20px;
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.qualify-btn-back:hover {
+  color: var(--text-secondary);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.qualify-actions .qualify-btn {
+  flex: 1;
+  margin-top: 0;
+}
+
+.qualify-trust {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* =============== THANK YOU / SOFT REJECTION =============== */
+.thankyou-direct-book {
+  margin-bottom: 32px;
+  padding: 20px 24px;
+  background: rgba(124, 58, 237, 0.07);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.thankyou-direct-book p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.thankyou-cal-link {
+  display: inline-block;
+  padding: 10px 24px;
+  font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  border-radius: 100px;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.thankyou-cal-link:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.7);
+  color: #c084fc;
+}
+
+/* =============== MEETING DETAILS CARD =============== */
+.meeting-details-card {
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.22);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.meeting-detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.meeting-detail-row svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: #a855f7;
+}
+
+.meeting-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.meeting-action-btn {
+  padding: 8px 18px;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  border: 1px solid;
+}
+
+.meeting-reschedule {
+  color: #a855f7;
+  border-color: rgba(168, 85, 247, 0.4);
+  background: transparent;
+}
+
+.meeting-reschedule:hover {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.7);
+}
+
+.meeting-cancel {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.3);
+  background: transparent;
+}
+
+.meeting-cancel:hover {
+  background: rgba(248, 113, 113, 0.08);
+  border-color: rgba(248, 113, 113, 0.5);
+}
+
 /* =============== FOOTER =============== */
 .footer {
   padding: 32px 20px;

@@ -150,7 +150,7 @@ export default function Home() {
 
             {/* CTA Button */}
             <a
-              href="/booking"
+              href="/qualify"
               className="hero-cta-btn"
               onClick={() => trackButtonClick("Book Demo", "hero")}
             >
@@ -281,7 +281,7 @@ export default function Home() {
 
           <div style={{ textAlign: 'center' }}>
             <a
-              href="/booking"
+              href="/qualify"
               className="section-cta"
               onClick={() => trackButtonClick("Book Demo", "pain_points")}
             >
@@ -326,7 +326,7 @@ export default function Home() {
 
             <div style={{ textAlign: 'center' }}>
               <a
-                href="/booking"
+                href="/qualify"
                 className="section-cta"
                 onClick={() => trackButtonClick("Book Demo", "solution")}
               >
@@ -362,7 +362,7 @@ export default function Home() {
 
           <div style={{ textAlign: 'center' }}>
             <a
-              href="/booking"
+              href="/qualify"
               className="section-cta"
               onClick={() => trackButtonClick("Book Demo", "industries")}
             >

@@ -261,3 +261,141 @@
   opacity: 1;
   transform: translateY(0);
 }
+
+/* =============== QUALIFY FORM (LIGHT) =============== */
+.light-theme.qualify-page {
+  background-color: var(--bg-primary);
+  background-image:
+    linear-gradient(rgba(124, 58, 237, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.04) 1px, transparent 1px);
+}
+
+.light-theme .qualify-progress-bar {
+  background: rgba(0, 0, 0, 0.07);
+}
+
+.light-theme .qualify-card {
+  background: #ffffff;
+  border-color: rgba(124, 58, 237, 0.15);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.06);
+}
+
+.light-theme .qualify-title {
+  color: var(--text-primary);
+}
+
+.light-theme .qualify-subtitle {
+  color: var(--text-secondary);
+}
+
+.light-theme .qualify-progress-label {
+  color: var(--text-muted);
+}
+
+.light-theme .form-group label {
+  color: var(--text-secondary);
+}
+
+.light-theme .form-group input,
+.light-theme .form-group select {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: var(--text-primary);
+}
+
+.light-theme .form-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.light-theme .form-group input:focus,
+.light-theme .form-group select:focus {
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.08);
+}
+
+.light-theme .radio-option {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: var(--text-secondary);
+}
+
+.light-theme .radio-option:hover {
+  background: rgba(124, 58, 237, 0.06);
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+.light-theme .radio-option.radio-selected {
+  background: rgba(124, 58, 237, 0.09);
+  border-color: rgba(124, 58, 237, 0.5);
+  color: var(--text-primary);
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.1);
+}
+
+.light-theme .qualify-btn-back {
+  color: var(--text-muted);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.light-theme .qualify-btn-back:hover {
+  color: var(--text-secondary);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.light-theme .qualify-trust {
+  color: var(--text-muted);
+}
+
+/* =============== THANK YOU (LIGHT) =============== */
+.light-theme .thankyou-direct-book {
+  background: rgba(124, 58, 237, 0.05);
+  border-color: rgba(124, 58, 237, 0.18);
+}
+
+.light-theme .thankyou-direct-book p {
+  color: var(--text-muted);
+}
+
+.light-theme .thankyou-cal-link {
+  color: #7c3aed;
+  border-color: rgba(124, 58, 237, 0.35);
+}
+
+.light-theme .thankyou-cal-link:hover {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: rgba(124, 58, 237, 0.6);
+  color: #6d28d9;
+}
+
+/* =============== MEETING DETAILS CARD (LIGHT) =============== */
+.light-theme .meeting-details-card {
+  background: rgba(124, 58, 237, 0.05);
+  border-color: rgba(124, 58, 237, 0.18);
+}
+
+.light-theme .meeting-detail-row {
+  color: var(--text-secondary);
+}
+
+.light-theme .meeting-actions {
+  border-top-color: rgba(0, 0, 0, 0.07);
+}
+
+.light-theme .meeting-reschedule {
+  color: #7c3aed;
+  border-color: rgba(124, 58, 237, 0.35);
+}
+
+.light-theme .meeting-reschedule:hover {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: rgba(124, 58, 237, 0.6);
+}
+
+.light-theme .meeting-cancel {
+  color: #dc2626;
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.light-theme .meeting-cancel:hover {
+  background: rgba(220, 38, 38, 0.06);
+  border-color: rgba(220, 38, 38, 0.5);
+}
