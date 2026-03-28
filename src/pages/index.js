@@ -1,7 +1,8 @@
 import { useEffect, useRef, useCallback } from "react";
 import PhonePreview from "@/components/PhonePreview";
 import Head from "next/head";
-import { trackButtonClick, trackSectionView } from "@/lib/analytics";
+import { trackButtonClick, trackSectionView, trackVideoMilestone } from "@/lib/analytics";
+import Player from "@vimeo/player";
 
 const CLIENT_LOGOS = Array.from({ length: 8 }, (_, i) => `/clients/v1/${i + 1}.png`);
 
@@ -62,6 +63,8 @@ const INDUSTRIES = [
 
 export default function Home() {
   const revealRefs = useRef([]);
+  const videoRef = useRef(null);
+  const trackedMilestones = useRef(new Set());
 
   // Track which sections have already been reported
   const trackedSections = useRef(new Set());
@@ -97,6 +100,40 @@ export default function Home() {
       revealRefs.current.push(el);
     }
   };
+
+  // Setup Vimeo tracking
+  useEffect(() => {
+    if (!videoRef.current) return;
+    const player = new Player(videoRef.current);
+
+    player.on("play", () => trackVideoMilestone("play"));
+    player.on("pause", () => trackVideoMilestone("pause"));
+
+    player.on("timeupdate", (data) => {
+      // data.percent is between 0 and 1
+      const milestones = [0.25, 0.5, 0.75, 0.9];
+      milestones.forEach((m) => {
+        if (data.percent >= m && !trackedMilestones.current.has(m)) {
+          trackedMilestones.current.add(m);
+          trackVideoMilestone(`played_${m * 100}_percent`);
+        }
+      });
+    });
+
+    player.on("ended", () => {
+      if (!trackedMilestones.current.has(1)) {
+        trackedMilestones.current.add(1);
+        trackVideoMilestone("ended");
+      }
+    });
+
+    return () => {
+      player.off("play");
+      player.off("pause");
+      player.off("timeupdate");
+      player.off("ended");
+    };
+  }, []);
 
   // Duplicate logos for infinite scroll
   const logoSet = [...CLIENT_LOGOS, ...CLIENT_LOGOS];
@@ -202,7 +239,7 @@ export default function Home() {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 /> */}
-                <iframe src="https://player.vimeo.com/video/1167476714?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="400" height="300" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerPolicy="strict-origin-when-cross-origin" title="Sendiee Demo"></iframe>
+                <iframe ref={videoRef} src="https://player.vimeo.com/video/1167476714?api=1&badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="400" height="300" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerPolicy="strict-origin-when-cross-origin" title="Sendiee Demo"></iframe>
               </div>
             </div>
 

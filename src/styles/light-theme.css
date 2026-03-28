@@ -296,18 +296,18 @@
   color: var(--text-secondary);
 }
 
-.light-theme .form-group input,
+.light-theme .form-group input:not(.phone-number-input):not(.phone-search-input),
 .light-theme .form-group select {
   background: rgba(0, 0, 0, 0.03);
   border-color: rgba(0, 0, 0, 0.12);
   color: var(--text-primary);
 }
 
-.light-theme .form-group input::placeholder {
+.light-theme .form-group input:not(.phone-number-input):not(.phone-search-input)::placeholder {
   color: var(--text-muted);
 }
 
-.light-theme .form-group input:focus,
+.light-theme .form-group input:not(.phone-number-input):not(.phone-search-input):focus,
 .light-theme .form-group select:focus {
   border-color: rgba(124, 58, 237, 0.5);
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.08);
